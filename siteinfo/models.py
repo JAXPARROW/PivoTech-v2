@@ -146,7 +146,6 @@ class Site(models.Model):
     region = models.CharField(choices=REGION, max_length=20, null=True)
     # field_engineer = models.ForeignKey('FE', related_name='FieldEngineer', null=True, blank=True, on_delete=models.SET_NULL)
     
-    # field_engineer = models.CharField(max_length=50, null=True)
     # field_engineer = GroupedForeignKey(FE, 'cluster',null=True)
     
     field_engineer = ChainedForeignKey(
