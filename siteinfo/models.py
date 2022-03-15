@@ -1,5 +1,3 @@
-from argparse import ONE_OR_MORE
-from tkinter.tix import Tree
 from django.utils import timezone
 import datetime
 
@@ -95,17 +93,26 @@ ACCESS_RESTRICTION = (
     ("No Restriction", "No Restriction"),
 )
 
+VEHICLE_STATUS = (
+    ("In Service","In Service"),
+    ("Out Service","Out of Service"),
+)
+
+
+class FleetVehicle(models.Model):
+    driver_name = models.CharField(max_length=50, blank=False, unique=True, null=True)
+    plate_number = models.CharField(max_length=10, blank=False, unique=True,null=True)
+    field_engineer = models.OneToOneField('FieldEngineer', blank=True, unique=True, null=True, on_delete=models.SET_NULL )
+    vehicle_status = models.CharField(choices=VEHICLE_STATUS, blank=True, null=True, default="In Service")
+
 
 
 class FuelStation(models.Model):
     station_name = models.CharField(max_length=50 ,blank=False, unique=True, null=True)
-
-
     class Meta:
         verbose_name = 'Fuel Station'
         verbose_name_plural = 'Fuel Stations'
         
-
     def __str__(self):
         return self.station_name
 
@@ -118,10 +125,8 @@ class Cluster(models.Model):
     zone = models.CharField(choices=ZONE, max_length=20, blank=False)
     maintanance_partner = models.CharField(max_length=15, blank=False, default='PIVOTECH')
 
-
     def __str__(self):
         return self.cluster_name
-
 
 class FieldEngineer(models.Model):
     cluster = models.ForeignKey('Cluster', null=True, blank=True, on_delete=models.SET_NULL)
@@ -134,7 +139,6 @@ class FieldEngineer(models.Model):
 
     def __str__(self):
         return self.username
-
     class Meta:
         verbose_name = 'Field Engineer'
         verbose_name_plural = 'Field Engineers'
@@ -144,24 +148,20 @@ class FieldEngineer(models.Model):
         age_of_service = (datetime.datetime.now().date() - self.joining_date).days
         return age_of_service
         
-
 class Site(models.Model):
     HTA_ID = models.CharField(primary_key=True, max_length=10, unique=True, blank=False)
     tenant_ID = models.CharField(max_length=10, blank=False)
     site_name = models.CharField(max_length=100, blank=False)
     fuel_station = models.ForeignKey('FuelStation', related_name='FuelStation', null=True, on_delete=models.SET_NULL)
     cluster = models.ForeignKey('Cluster', related_name='Cluster', null=True, on_delete=models.SET_NULL)
-    region = models.CharField(choices=REGION, max_length=20, null=True)
-    
+    region = models.CharField(choices=REGION, max_length=20, null=True)    
     field_engineer = ChainedForeignKey(
         FieldEngineer, 
         chained_field='cluster',
         chained_model_field='cluster',
         show_all=False,
         auto_choose=True,
-        sort=True
-    )
-
+        sort=True)
     grid_status = models.CharField(choices=GRID_STATUS, null=True, max_length=10)
     configuration = models.CharField(choices=CONFIGURATION, null=True, max_length=3)
     dg_ownership = models.CharField(choices=DG_OWNERSHIP, null=True, max_length=10)
@@ -182,7 +182,6 @@ class Site(models.Model):
     tank_capacity = models.IntegerField(null=True)
     ETA = models.TimeField()
     ERT = models.TimeField()
-
     access_restricted = models.CharField(choices=YES_NO_SELECTION, max_length=3, null=True, blank=True)
     restriction_reasons = models.CharField(choices=ACCESS_RESTRICTION, default="No Restriction",max_length=20, null=True, blank=True)
     
