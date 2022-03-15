@@ -1,14 +1,14 @@
 from django.contrib import admin
-from siteinfo.models import *
+from siteinfo.models import Cluster, FieldEngineer, FuelStation, Site
 from import_export.admin import ImportExportModelAdmin, ImportExportActionModelAdmin
 
-from siteinfo.resources import ClusterResource, FEResource, FuelStationResource, SiteResource
+from siteinfo.resources import ClusterResource, FieldEngineerResource, FuelStationResource, SiteResource
 
 
 
-class FEAdmin(ImportExportActionModelAdmin):
-    resource_class = FEResource
-    list_display = ['username', 'cluster', 'GMT', 'phone_number', 'joining_date','age_of_service',]
+class FieldEngineerAdmin(ImportExportActionModelAdmin):
+    resource_class = FieldEngineerResource
+    list_display = ['field_engineer', 'cluster', 'GMT', 'phone_number', 'joining_date','age_of_service',]
     list_editable = ['joining_date','cluster',]
 
 
@@ -16,7 +16,7 @@ class ClusterAdmin(ImportExportActionModelAdmin):
     resource_class = ClusterResource
     list_display = ['cluster_name','noc_operator','field_supervisor','zonal_manager','zone',]
     list_filter = ['cluster_name','zone', 'zonal_manager',]
-    list_search = ['username',]
+    list_search = ['field_engineer',]
 
 
 
@@ -40,7 +40,7 @@ class SiteAdmin(ImportExportModelAdmin):
 
 
 
-admin.site.register(FE, FEAdmin)
+admin.site.register(FieldEngineer, FieldEngineerAdmin)
 admin.site.register(Cluster, ClusterAdmin)
 admin.site.register(FuelStation, FuelStationAdmin)
 admin.site.register(Site, SiteAdmin)

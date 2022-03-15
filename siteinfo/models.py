@@ -1,3 +1,5 @@
+from argparse import ONE_OR_MORE
+from tkinter.tix import Tree
 from django.utils import timezone
 import datetime
 
@@ -6,7 +8,6 @@ from smart_selects.db_fields import ChainedForeignKey,GroupedForeignKey
 from django.db import models
 from django.contrib.auth.models import User
 
-# from model_utils import FieldTracker
 
 CONFIGURATION =( 
     ('GHS','GHS'),
@@ -58,10 +59,10 @@ LUKU_PAYMENT =(
     ("Consolidated","Consolidated")
 )
 
-SITE_STATUS =( 
+SITE_STATUS =[
     ("Online","Online"),
     ("Offline","Offline")
-)
+]
 
 
 #currently not used
@@ -87,12 +88,18 @@ YES_NO_SELECTION = (
     ("NO","NO"),
 )
 
+#Issues hindering access restriction to the sites
+ACCESS_RESTRICTION = (
+    ("Safety Reasons","Safety Reasons"),
+    ("Permit Reasons", "Permit Reasons"),
+    ("No Restriction", "No Restriction"),
+)
+
 
 
 class FuelStation(models.Model):
     station_name = models.CharField(max_length=50 ,blank=False, unique=True, null=True)
 
-    # tracker = FieldTracker()
 
     class Meta:
         verbose_name = 'Fuel Station'
@@ -111,18 +118,19 @@ class Cluster(models.Model):
     zone = models.CharField(choices=ZONE, max_length=20, blank=False)
     maintanance_partner = models.CharField(max_length=15, blank=False, default='PIVOTECH')
 
-    # tracker = FieldTracker()
 
     def __str__(self):
         return self.cluster_name
 
 
-class FE(models.Model):
-    username = models.CharField(max_length=30, unique=True)
+class FieldEngineer(models.Model):
     cluster = models.ForeignKey('Cluster', null=True, blank=True, on_delete=models.SET_NULL)
+    field_engineer = models.CharField(max_length=30, unique=True)
     joining_date = models.DateField(blank=True, null=True)
     phone_number = models.IntegerField(unique=True, null=True, blank=True)
     GMT = models.CharField(max_length=20, null=True, blank=True)
+    # drivers_name = models.CharField(max_length=20, null=True, blank=True)
+    # plate_number = models.CharField(max_length=20, null=True, blank=True)
 
     def __str__(self):
         return self.username
@@ -144,17 +152,14 @@ class Site(models.Model):
     fuel_station = models.ForeignKey('FuelStation', related_name='FuelStation', null=True, on_delete=models.SET_NULL)
     cluster = models.ForeignKey('Cluster', related_name='Cluster', null=True, on_delete=models.SET_NULL)
     region = models.CharField(choices=REGION, max_length=20, null=True)
-    # field_engineer = models.ForeignKey('FE', related_name='FieldEngineer', null=True, blank=True, on_delete=models.SET_NULL)
-    
-    # field_engineer = GroupedForeignKey(FE, 'cluster',null=True)
     
     field_engineer = ChainedForeignKey(
-        Cluster, 
+        FieldEngineer, 
         chained_field='cluster',
-        chained_model_field='username',
-        show_all=True,
-        auto_choose=False,
-        null=True
+        chained_model_field='cluster',
+        show_all=False,
+        auto_choose=True,
+        sort=True
     )
 
     grid_status = models.CharField(choices=GRID_STATUS, null=True, max_length=10)
@@ -177,11 +182,10 @@ class Site(models.Model):
     tank_capacity = models.IntegerField(null=True)
     ETA = models.TimeField()
     ERT = models.TimeField()
-    
-    # tracker = FieldTracker()
 
+    access_restricted = models.CharField(choices=YES_NO_SELECTION, max_length=3, null=True, blank=True)
+    restriction_reasons = models.CharField(choices=ACCESS_RESTRICTION, default="No Restriction",max_length=20, null=True, blank=True)
+    
     def __str__(self):
         return '{} {}'.format(self.site_name,self.tenant_ID)
-
-
 

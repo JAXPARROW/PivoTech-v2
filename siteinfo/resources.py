@@ -1,8 +1,7 @@
 from import_export import resources, widgets, fields
-from import_export.fields import Field
 from import_export.widgets import ForeignKeyWidget
 
-from siteinfo.models import *
+from siteinfo.models import Cluster, FuelStation, Site, FieldEngineer
 
 
 
@@ -17,7 +16,7 @@ class ClusterResource(resources.ModelResource):
 
 
 
-class FEResource(resources.ModelResource):
+class FieldEngineerResource(resources.ModelResource):
 
     #cluster_item = cluster_name, renamed to avoid circular reference
     cluster_item = fields.Field(
@@ -29,7 +28,7 @@ class FEResource(resources.ModelResource):
     )
 
     class Meta:
-        model = FE
+        model = FieldEngineer
         skip_unchanged = True
         report_skipped = True
         exclude = ('id','cluster')
@@ -74,7 +73,7 @@ class SiteResource(resources.ModelResource):
     fe = fields.Field(
         column_name='FE',
         attribute='field_engineer',
-        widget=ForeignKeyWidget(FE, 'username'),
+        widget=ForeignKeyWidget(FieldEngineer, 'username'),
         saves_null_values=False,
         readonly=False,
     )

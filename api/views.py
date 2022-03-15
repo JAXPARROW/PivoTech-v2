@@ -1,5 +1,5 @@
-from api.serializers import ClusterSerializer, FESerializer, SiteSerializer, FuelStationSerializer
-from siteinfo.models import Cluster, Site, FuelStation, FE
+from api.serializers import ClusterSerializer, FieldEngineerSerializer, SiteSerializer, FuelStationSerializer
+from siteinfo.models import Cluster, Site, FuelStation, FieldEngineer
 
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
@@ -56,8 +56,8 @@ class FieldEngineerList(generics.ListAPIView):
     # authentication_classes = [SessionAuthentication, BasicAuthentication]
     # permission_classes = [IsAuthenticated]
 
-    queryset = FE.objects.all()
-    serializer_class = FESerializer
+    queryset = FieldEngineer.objects.all()
+    serializer_class = FieldEngineerSerializer
 
     throttle_classes = [UserRateThrottle]
 

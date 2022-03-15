@@ -1,4 +1,4 @@
-from siteinfo.models import Cluster, FuelStation, Site, FE
+from siteinfo.models import Cluster, FuelStation, Site, FieldEngineer
 from rest_framework import serializers
 
 
@@ -23,11 +23,11 @@ class ClusterSerializer(serializers.ModelSerializer):
         model = Cluster
         fields = ('cluster_name','noc_operator','field_supervisor','zonal_manager','zone','maintanance_partner',)
 
-class FESerializer(serializers.ModelSerializer):
+class FieldEngineerSerializer(serializers.ModelSerializer):
     cluster = ClusterSerializer()
     class Meta:
-        model = FE
-        fields = ('username','GMT','phone_number', 'joining_date', 'cluster',)
+        model = FieldEngineer
+        fields = ('field_engineer','GMT','phone_number', 'joining_date', 'cluster',)
         
 
 class FuelStationSerializer(serializers.ModelSerializer):
