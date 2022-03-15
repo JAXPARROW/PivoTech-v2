@@ -2,8 +2,8 @@
 # Project files and directories
 /myproject/local_settings.py
 /myproject/static/
-/myproject/tmp/
 /myproject/media/
+/myproject/tmp/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
