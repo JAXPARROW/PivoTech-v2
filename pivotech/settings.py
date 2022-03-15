@@ -149,8 +149,5 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# USE_DJANGO_JQUERY : By default, smart_selects loads jQuery from Google’s CDN. 
-# However, it can use jQuery from Django’s admin area. Set USE_DJANGO_JQUERY = True to enable this behaviour.
-
+#Django JQUERY for the smart-select library
 USE_DJANGO_JQUERY = True
-# JQUERY_URL = True
