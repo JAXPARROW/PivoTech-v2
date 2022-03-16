@@ -1,3 +1,5 @@
+from pyexpat import model
+from tabnanny import verbose
 from django.utils import timezone
 import datetime
 
@@ -95,15 +97,23 @@ ACCESS_RESTRICTION = (
 
 VEHICLE_STATUS = (
     ("In Service","In Service"),
-    ("Out Service","Out of Service"),
+    ("Out of Service","Out of Service"),
 )
 
 
 class FleetVehicle(models.Model):
     driver_name = models.CharField(max_length=50, blank=False, unique=True, null=True)
-    plate_number = models.CharField(max_length=10, blank=False, unique=True,null=True)
+    plate_number = models.CharField(max_length=10, blank=False, unique=True, null=True)
+    phone_number = models.IntegerField(blank=False, unique=True, null=True)
     field_engineer = models.OneToOneField('FieldEngineer', blank=True, unique=True, null=True, on_delete=models.SET_NULL )
-    vehicle_status = models.CharField(choices=VEHICLE_STATUS, blank=True, null=True, default="In Service")
+    vehicle_status = models.CharField(choices=VEHICLE_STATUS, max_length=50, blank=True, null=True, default="In Service")
+
+    class Meta:
+        verbose_name = 'Fleet Vehicle'
+        verbose_name_plural = 'Fleet Vehicles'
+
+    def __str__(self):
+        return self.plate_number
 
 
 
@@ -128,17 +138,19 @@ class Cluster(models.Model):
     def __str__(self):
         return self.cluster_name
 
+
+
 class FieldEngineer(models.Model):
     cluster = models.ForeignKey('Cluster', null=True, blank=True, on_delete=models.SET_NULL)
     field_engineer = models.CharField(max_length=30, unique=True)
     joining_date = models.DateField(blank=True, null=True)
     phone_number = models.IntegerField(unique=True, null=True, blank=True)
+    alternate_number = models.IntegerField(unique=True, null=True, blank=True)
     GMT = models.CharField(max_length=20, null=True, blank=True)
-    # drivers_name = models.CharField(max_length=20, null=True, blank=True)
-    # plate_number = models.CharField(max_length=20, null=True, blank=True)
+    vehicle = models.OneToOneField(FleetVehicle, on_delete=models.SET_NULL, null=True, primary_key=False)
 
     def __str__(self):
-        return self.username
+        return self.field_engineer
     class Meta:
         verbose_name = 'Field Engineer'
         verbose_name_plural = 'Field Engineers'
@@ -148,10 +160,14 @@ class FieldEngineer(models.Model):
         age_of_service = (datetime.datetime.now().date() - self.joining_date).days
         return age_of_service
         
+
+
 class Site(models.Model):
     HTA_ID = models.CharField(primary_key=True, max_length=10, unique=True, blank=False)
     tenant_ID = models.CharField(max_length=10, blank=False)
-    site_name = models.CharField(max_length=100, blank=False)
+    site_name = models.CharField(max_length=100, blank=False, null=True)
+    anchor_tenant = models.CharField(max_length=30, blank=False, null=True)
+    number_of_tenants = models.IntegerField(null=True, blank=True)
     fuel_station = models.ForeignKey('FuelStation', related_name='FuelStation', null=True, on_delete=models.SET_NULL)
     cluster = models.ForeignKey('Cluster', related_name='Cluster', null=True, on_delete=models.SET_NULL)
     region = models.CharField(choices=REGION, max_length=20, null=True)    
@@ -173,6 +189,7 @@ class Site(models.Model):
     criticality = models.CharField(choices=CRITICALITY, null=True, max_length=2)
     dg_present = models.CharField(choices=YES_NO_SELECTION, null=True, max_length=3)
     DG_type = models.CharField(max_length=50, null=True)
+    tanesco_region = models.CharField(max_length=50, null=True, blank=True)
     meter_number = models.IntegerField(null=True, blank=True)
     luku_cph = models.DecimalField(max_digits=3, decimal_places=1)
     fuel_cph = models.DecimalField(max_digits=3, decimal_places=1)

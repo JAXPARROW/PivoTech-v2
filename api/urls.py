@@ -8,6 +8,7 @@ urlpatterns = [
     path('sites/', views.SiteList.as_view()),
     path('fuelstations/', views.FuelStationList.as_view()),
     path('fieldengineers/', views.FieldEngineerList.as_view()),
+    path('vehicles/',views.FleetVehicleList.as_view()),
     # path('users/', views.UserList.as_view()),
     # path('groups/',views.GroupList.as_view()),
 ]

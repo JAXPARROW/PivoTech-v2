@@ -1,8 +1,8 @@
-from api.serializers import ClusterSerializer, FieldEngineerSerializer, SiteSerializer, FuelStationSerializer
-from siteinfo.models import Cluster, Site, FuelStation, FieldEngineer
+from api.serializers import ClusterSerializer, FieldEngineerSerializer, SiteSerializer, FuelStationSerializer, FleetVehicleSerializer
+from siteinfo.models import Cluster, Site, FuelStation, FieldEngineer, FleetVehicle
 
-from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics
 from rest_framework.throttling import UserRateThrottle
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -18,13 +18,17 @@ from rest_framework.permissions import IsAuthenticated
 #     queryset = Group.objects.all()
 #     serializer_class = GroupSerializer
 
+class FleetVehicleList(generics.ListAPIView):
+    queryset = FleetVehicle.objects.all()
+    serializer_class = FleetVehicleSerializer
+    
+
+
 class ClusterList(generics.ListAPIView):
     # authentication_classes = [SessionAuthentication, BasicAuthentication]
     # permission_classes = [IsAuthenticated]
-
     queryset = Cluster.objects.all()
     serializer_class = ClusterSerializer
-
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ('cluster_name', 'noc_operator', 'field_supervisor', 'zonal_manager', 'zone', 'maintanance_partner',)
 
@@ -32,10 +36,8 @@ class ClusterList(generics.ListAPIView):
 class SiteList(generics.ListAPIView):
     # authentication_classes = [SessionAuthentication, BasicAuthentication]
     # permission_classes = [IsAuthenticated]
-
     queryset = Site.objects.all()
     serializer_class = SiteSerializer
-
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ('HTA_ID','tenant_ID','site_name','field_engineer','fuel_station','cluster__maintanance_partner','grid_status',
                             'configuration', 'luku_payment' , 'meter_number', 'fuel_cph', 'luku_cph', 'MKII_PLC', 'PLC_locked', 'QSV',
@@ -47,7 +49,6 @@ class SiteList(generics.ListAPIView):
 class FuelStationList(generics.ListAPIView):
     # authentication_classes = [SessionAuthentication, BasicAuthentication]
     # permission_classes = [IsAuthenticated]
-
     queryset = FuelStation.objects.all()
     serializer_class = FuelStationSerializer
 
@@ -55,11 +56,8 @@ class FuelStationList(generics.ListAPIView):
 class FieldEngineerList(generics.ListAPIView):
     # authentication_classes = [SessionAuthentication, BasicAuthentication]
     # permission_classes = [IsAuthenticated]
-
     queryset = FieldEngineer.objects.all()
     serializer_class = FieldEngineerSerializer
-
     throttle_classes = [UserRateThrottle]
-
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ('cluster', 'GMT')

@@ -1,14 +1,20 @@
 from django.contrib import admin
-from siteinfo.models import Cluster, FieldEngineer, FuelStation, Site
+from siteinfo.models import Cluster, FieldEngineer, FuelStation, Site, FleetVehicle
 from import_export.admin import ImportExportModelAdmin, ImportExportActionModelAdmin
 
-from siteinfo.resources import ClusterResource, FieldEngineerResource, FuelStationResource, SiteResource
+from siteinfo.resources import ClusterResource, FieldEngineerResource, FleetVehicleResource, FuelStationResource, SiteResource
 
+
+
+class FleetVehicleAdmin(ImportExportModelAdmin):
+    resource_class = FleetVehicleResource
+    list_display = ['driver_name','plate_number','field_engineer','vehicle_status','phone_number']
+    list_editable = ['vehicle_status',]
 
 
 class FieldEngineerAdmin(ImportExportActionModelAdmin):
     resource_class = FieldEngineerResource
-    list_display = ['field_engineer', 'cluster', 'GMT', 'phone_number', 'joining_date','age_of_service',]
+    list_display = ['field_engineer', 'cluster', 'GMT', 'phone_number', 'alternate_number','joining_date','age_of_service',]
     list_editable = ['joining_date','cluster',]
 
 
@@ -40,6 +46,7 @@ class SiteAdmin(ImportExportModelAdmin):
 
 
 
+admin.site.register(FleetVehicle, FleetVehicleAdmin)
 admin.site.register(FieldEngineer, FieldEngineerAdmin)
 admin.site.register(Cluster, ClusterAdmin)
 admin.site.register(FuelStation, FuelStationAdmin)

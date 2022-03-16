@@ -1,8 +1,22 @@
+from pyexpat import model
+from unittest import skip
 from import_export import resources, widgets, fields
 from import_export.widgets import ForeignKeyWidget
 
-from siteinfo.models import Cluster, FuelStation, Site, FieldEngineer
+from siteinfo.models import Cluster, FuelStation, Site, FieldEngineer, FleetVehicle
 
+
+
+
+
+
+class FleetVehicleResource(resources.ModelResource):
+
+    class Meta:
+        model = FleetVehicle
+        skip_unchanged = True
+        report_skipped = True
+        exclude = ('id',)
 
 
 class ClusterResource(resources.ModelResource):
@@ -13,7 +27,6 @@ class ClusterResource(resources.ModelResource):
         report_skipped = True
         # exclude = ('id',)
         # import_id_fields = ('cluster_name')
-
 
 
 class FieldEngineerResource(resources.ModelResource):
@@ -35,7 +48,6 @@ class FieldEngineerResource(resources.ModelResource):
         import_id_fields = ('username',)
         fields = ('username', 'cluster_item','phone_number','GMT', 'joining_date',)
         export_order = ('username', 'cluster_item','phone_number','GMT', 'joining_date',)
-
 
 
 class FuelStationResource(resources.ModelResource):
