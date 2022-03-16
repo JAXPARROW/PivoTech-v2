@@ -100,6 +100,17 @@ VEHICLE_STATUS = (
     ("Out of Service","Out of Service"),
 )
 
+SPA_SELECTION = (
+    ('Configured', 'Configured'),
+    ('Non-Configured', 'Non-Configgured'),
+    ('Optimized', 'Optimized'),
+)
+
+CAR_OWNERSHIP = (
+    ('Leased', 'Leased'),
+    ('Owned', 'Owned'),
+)
+
 
 class FleetVehicle(models.Model):
     driver_name = models.CharField(max_length=50, blank=False, unique=True, null=True)
@@ -107,6 +118,7 @@ class FleetVehicle(models.Model):
     phone_number = models.IntegerField(blank=False, unique=True, null=True)
     field_engineer = models.OneToOneField('FieldEngineer', blank=True, unique=True, null=True, on_delete=models.SET_NULL )
     vehicle_status = models.CharField(choices=VEHICLE_STATUS, max_length=50, blank=True, null=True, default="In Service")
+    car_ownership = models.CharField(choices=CAR_OWNERSHIP, max_length=50, blank=True, default='Owned')
 
     class Meta:
         verbose_name = 'Fleet Vehicle'
@@ -193,6 +205,8 @@ class Site(models.Model):
     meter_number = models.IntegerField(null=True, blank=True)
     luku_cph = models.DecimalField(max_digits=3, decimal_places=1)
     fuel_cph = models.DecimalField(max_digits=3, decimal_places=1)
+    SPA_Status = models.CharField(choices=SPA_SELECTION, default='Optimized', null=True)
+    site_load = models.CharField(max_length=10, null=True, blank=True)
     MKII_PLC = models.CharField(choices=YES_NO_SELECTION, max_length=3)
     PLC_locked = models.CharField(choices=YES_NO_SELECTION, max_length=3)
     dg_capacity = models.IntegerField()
