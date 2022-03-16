@@ -1,5 +1,4 @@
-from pyexpat import model
-from tabnanny import verbose
+from tkinter.messagebox import NO, YES
 from django.utils import timezone
 import datetime
 
@@ -59,13 +58,11 @@ LUKU_PAYMENT =(
     ("Consolidated","Consolidated")
 )
 
-SITE_STATUS =[
+SITE_STATUS =(
     ("Online","Online"),
     ("Offline","Offline")
-]
+)
 
-
-#currently not used
 VISIT_TYPE =(
     ("QSV","QSV"),
     ("1SVM","1SVM")
@@ -104,6 +101,11 @@ SPA_SELECTION = (
     ('Configured', 'Configured'),
     ('Non-Configured', 'Non-Configgured'),
     ('Optimized', 'Optimized'),
+)
+
+SITE_SHELTER = (
+    ('Indoor', 'Indoor'),
+    ('Outdoor', 'Outdoor'),
 )
 
 CAR_OWNERSHIP = (
@@ -190,30 +192,30 @@ class Site(models.Model):
         show_all=False,
         auto_choose=True,
         sort=True)
-    grid_status = models.CharField(choices=GRID_STATUS, null=True, max_length=10)
-    configuration = models.CharField(choices=CONFIGURATION, null=True, max_length=3)
-    dg_ownership = models.CharField(choices=DG_OWNERSHIP, null=True, max_length=10)
-    site_class = models.CharField(choices=SITE_CLASS, null=True, max_length=10)
-    luku_payment = models.CharField(choices=LUKU_PAYMENT, null=True, max_length=20)
-    site_status = models.CharField(choices=SITE_STATUS, null=True, max_length=10)
+    grid_status = models.CharField(choices=GRID_STATUS, default='Grid', null=True, max_length=10)
+    configuration = models.CharField(choices=CONFIGURATION, default='GXX', null=True, max_length=3)
+    dg_ownership = models.CharField(choices=DG_OWNERSHIP, default='HTT-DG', null=True, max_length=10)
+    site_class = models.CharField(choices=SITE_CLASS, default='Silver', null=True, max_length=10)
+    luku_payment = models.CharField(choices=LUKU_PAYMENT, default='Pre-Paid', null=True, max_length=20)
+    site_status = models.CharField(choices=SITE_STATUS, default='Online', null=True, max_length=10)
     QSV = models.CharField(choices=YES_NO_SELECTION, null=True, max_length=4, default='NO')
-    site_type = models.CharField(choices=SITE_TYPE, null=True, max_length=30)
-    criticality = models.CharField(choices=CRITICALITY, null=True, max_length=2)
-    dg_present = models.CharField(choices=YES_NO_SELECTION, null=True, max_length=3)
+    site_type = models.CharField(choices=SITE_TYPE, default='Green Field', null=True, max_length=30)
+    criticality = models.CharField(choices=CRITICALITY, default='C1', null=True, max_length=2)
+    dg_present = models.CharField(choices=YES_NO_SELECTION, default='YES', null=True, max_length=3)
     DG_type = models.CharField(max_length=50, null=True)
     tanesco_region = models.CharField(max_length=50, null=True, blank=True)
     meter_number = models.IntegerField(null=True, blank=True)
     luku_cph = models.DecimalField(max_digits=3, decimal_places=1)
     fuel_cph = models.DecimalField(max_digits=3, decimal_places=1)
-    SPA_Status = models.CharField(choices=SPA_SELECTION, default='Optimized', null=True)
+    SPA_Status = models.CharField(choices=SPA_SELECTION, max_length=50, default='Optimized', null=True)
     site_load = models.CharField(max_length=10, null=True, blank=True)
-    MKII_PLC = models.CharField(choices=YES_NO_SELECTION, max_length=3)
-    PLC_locked = models.CharField(choices=YES_NO_SELECTION, max_length=3)
+    MKII_PLC = models.CharField(choices=YES_NO_SELECTION, default='YES', max_length=3)
+    PLC_locked = models.CharField(choices=YES_NO_SELECTION, default='YES', max_length=3)
     dg_capacity = models.IntegerField()
     tank_capacity = models.IntegerField(null=True)
     ETA = models.TimeField()
     ERT = models.TimeField()
-    access_restricted = models.CharField(choices=YES_NO_SELECTION, max_length=3, null=True, blank=True)
+    access_restricted = models.CharField(choices=YES_NO_SELECTION, default='NO',max_length=3, null=True, blank=True)
     restriction_reasons = models.CharField(choices=ACCESS_RESTRICTION, default="No Restriction",max_length=20, null=True, blank=True)
     
     def __str__(self):
