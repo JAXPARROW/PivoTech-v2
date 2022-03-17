@@ -116,9 +116,8 @@ CAR_OWNERSHIP = (
 
 class FleetVehicle(models.Model):
     driver_name = models.CharField(max_length=50, blank=False, unique=True, null=True)
-    plate_number = models.CharField(max_length=10, blank=False, unique=True, null=True)
+    registration_number = models.CharField(max_length=10, blank=False, unique=True, null=True)
     phone_number = models.IntegerField(blank=False, unique=True, null=True)
-    field_engineer = models.OneToOneField('FieldEngineer', blank=True, unique=True, null=True, on_delete=models.SET_NULL )
     vehicle_status = models.CharField(choices=VEHICLE_STATUS, max_length=50, blank=True, null=True, default="In Service")
     car_ownership = models.CharField(choices=CAR_OWNERSHIP, max_length=50, blank=True, default='Owned')
 
@@ -127,7 +126,7 @@ class FleetVehicle(models.Model):
         verbose_name_plural = 'Fleet Vehicles'
 
     def __str__(self):
-        return self.plate_number
+        return self.registration_number
 
 
 

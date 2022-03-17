@@ -8,7 +8,7 @@ from siteinfo.resources import ClusterResource, FieldEngineerResource, FleetVehi
 
 class FleetVehicleAdmin(ImportExportModelAdmin):
     resource_class = FleetVehicleResource
-    list_display = ['driver_name','plate_number','field_engineer','vehicle_status','phone_number']
+    list_display = ['driver_name','registration_number','vehicle_status','phone_number']
     list_editable = ['vehicle_status',]
 
 
