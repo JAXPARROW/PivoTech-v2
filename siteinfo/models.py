@@ -1,4 +1,3 @@
-from tkinter.messagebox import NO, YES
 from django.utils import timezone
 import datetime
 
@@ -59,8 +58,8 @@ LUKU_PAYMENT =(
 )
 
 SITE_STATUS =(
-    ("Online","Online"),
-    ("Offline","Offline")
+    ("On Air","On Air"),
+    ("Decomisioned","Decomisioned")
 )
 
 VISIT_TYPE =(
@@ -108,11 +107,20 @@ SITE_SHELTER = (
     ('Outdoor', 'Outdoor'),
 )
 
+HTT_CLASS = (
+    ('B','B'),
+    ('C','C'),
+)
+
 CAR_OWNERSHIP = (
     ('Leased', 'Leased'),
     ('Owned', 'Owned'),
 )
 
+POWER_TYPE = (
+    ('AC','AC'),
+    ('DC','DC')
+)
 
 class FleetVehicle(models.Model):
     driver_name = models.CharField(max_length=50, blank=False, unique=True, null=True)
@@ -183,7 +191,7 @@ class Site(models.Model):
     number_of_tenants = models.IntegerField(null=True, blank=True)
     fuel_station = models.ForeignKey('FuelStation', related_name='FuelStation', null=True, on_delete=models.SET_NULL)
     cluster = models.ForeignKey('Cluster', related_name='Cluster', null=True, on_delete=models.SET_NULL)
-    region = models.CharField(choices=REGION, max_length=20, null=True)    
+    region = models.CharField(choices=REGION, max_length=50, null=True)    
     field_engineer = ChainedForeignKey(
         FieldEngineer, 
         chained_field='cluster',
@@ -191,31 +199,35 @@ class Site(models.Model):
         show_all=False,
         auto_choose=True,
         sort=True)
-    grid_status = models.CharField(choices=GRID_STATUS, default='Grid', null=True, max_length=10)
-    configuration = models.CharField(choices=CONFIGURATION, default='GXX', null=True, max_length=3)
-    dg_ownership = models.CharField(choices=DG_OWNERSHIP, default='HTT-DG', null=True, max_length=10)
-    site_class = models.CharField(choices=SITE_CLASS, default='Silver', null=True, max_length=10)
-    luku_payment = models.CharField(choices=LUKU_PAYMENT, default='Pre-Paid', null=True, max_length=20)
-    site_status = models.CharField(choices=SITE_STATUS, default='Online', null=True, max_length=10)
-    QSV = models.CharField(choices=YES_NO_SELECTION, null=True, max_length=4, default='NO')
-    site_type = models.CharField(choices=SITE_TYPE, default='Green Field', null=True, max_length=30)
-    criticality = models.CharField(choices=CRITICALITY, default='C1', null=True, max_length=2)
-    dg_present = models.CharField(choices=YES_NO_SELECTION, default='YES', null=True, max_length=3)
-    DG_type = models.CharField(max_length=50, null=True)
-    tanesco_region = models.CharField(max_length=50, null=True, blank=True)
+    grid_status = models.CharField(choices=GRID_STATUS, default='Grid', null=True, max_length=50)
+    configuration = models.CharField(choices=CONFIGURATION, default='GXX', null=True, max_length=50)
+    dg_ownership = models.CharField(choices=DG_OWNERSHIP, default='HTT-DG', null=True, max_length=50)
+    site_class = models.CharField(choices=SITE_CLASS, default='Silver', null=True, max_length=50)
+    luku_payment = models.CharField(choices=LUKU_PAYMENT, default='Pre-Paid', null=True, max_length=50)
+    site_status = models.CharField(choices=SITE_STATUS, default='Online', null=True, max_length=50)
+    htt_class = models.CharField(choices=HTT_CLASS, default='C',null=True, max_length=10)
+    QSV = models.CharField(choices=YES_NO_SELECTION, null=True, max_length=50, default='NO')
+    site_type = models.CharField(choices=SITE_TYPE, default='Green Field', null=True, max_length=250)
+    criticality = models.CharField(choices=CRITICALITY, default='C1', null=True, max_length=50)
+    dg_present = models.CharField(choices=YES_NO_SELECTION, default='YES', null=True, max_length=50)
+    DG_type = models.CharField(max_length=250, null=True)
+    tanesco_region = models.CharField(max_length=250, null=True, blank=True)
     meter_number = models.IntegerField(null=True, blank=True)
-    luku_cph = models.DecimalField(max_digits=3, decimal_places=1)
-    fuel_cph = models.DecimalField(max_digits=3, decimal_places=1)
-    SPA_Status = models.CharField(choices=SPA_SELECTION, max_length=50, default='Optimized', null=True)
+    luku_cph = models.DecimalField(max_digits=10, decimal_places=1)
+    fuel_cph = models.DecimalField(max_digits=10, decimal_places=1)
+    SPA_Status = models.CharField(choices=SPA_SELECTION, max_length=50, default='Optimized', null=True, blank=True)
     site_load = models.CharField(max_length=10, null=True, blank=True)
-    MKII_PLC = models.CharField(choices=YES_NO_SELECTION, default='YES', max_length=3)
-    PLC_locked = models.CharField(choices=YES_NO_SELECTION, default='YES', max_length=3)
+    power_type = models.CharField(choices=POWER_TYPE, max_length=50, default='DC', null=True, blank=True)
+    MKII_PLC = models.CharField(choices=YES_NO_SELECTION, default='YES', max_length=50)
+    PLC_locked = models.CharField(choices=YES_NO_SELECTION, default='YES', max_length=50)
     dg_capacity = models.IntegerField()
     tank_capacity = models.IntegerField(null=True)
     ETA = models.TimeField()
     ERT = models.TimeField()
-    access_restricted = models.CharField(choices=YES_NO_SELECTION, default='NO',max_length=3, null=True, blank=True)
-    restriction_reasons = models.CharField(choices=ACCESS_RESTRICTION, default="No Restriction",max_length=20, null=True, blank=True)
+    access_restricted = models.CharField(choices=YES_NO_SELECTION, default='NO',max_length=50, null=True, blank=True)
+    restriction_reasons = models.CharField(choices=ACCESS_RESTRICTION, default="No Restriction",max_length=250, null=True, blank=True)
+    latitude   = models.FloatField(blank=True, null=True)
+    longitude   = models.FloatField(blank=True, null=True)
     
     def __str__(self):
         return '{} {}'.format(self.site_name,self.tenant_ID)
