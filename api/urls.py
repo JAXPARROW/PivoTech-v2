@@ -9,6 +9,7 @@ urlpatterns = [
     path('fuelstations/', views.FuelStationList.as_view()),
     path('fieldengineers/', views.FieldEngineerList.as_view()),
     path('vehicles/',views.FleetVehicleList.as_view()),
+    path('allinfo/',views.AllInfoView.as_view()),
     # path('users/', views.UserList.as_view()),
     # path('groups/',views.GroupList.as_view()),
 ]

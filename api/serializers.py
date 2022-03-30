@@ -1,5 +1,3 @@
-from dataclasses import field
-from pyexpat import model
 from siteinfo.models import Cluster, FleetVehicle, FuelStation, Site, FieldEngineer
 from rest_framework import serializers
 
@@ -18,8 +16,12 @@ from django.contrib.auth.models import User, Group
 #         fields = ('username', 'first_name', 'last_name', 'email',)
 
 
-
-
+class FleetVehicleSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = FleetVehicle
+        fields = ('driver_name','registration_number','vehicle_status',)
+        # fields = '__all__'
 
 
 class ClusterSerializer(serializers.ModelSerializer):
@@ -30,10 +32,12 @@ class ClusterSerializer(serializers.ModelSerializer):
 
 
 class FieldEngineerSerializer(serializers.ModelSerializer):
-    cluster = ClusterSerializer()
+    # cluster = ClusterSerializer()
+    vehicle = FleetVehicleSerializer()
     class Meta:
         model = FieldEngineer
-        fields = ('field_engineer','GMT','phone_number', 'joining_date', 'cluster',)
+        # fields = '__all__'
+        fields = ('field_engineer','GMT','phone_number', 'joining_date','vehicle',)
 
 
 class FleetFESerializer(serializers.ModelSerializer):
@@ -41,12 +45,6 @@ class FleetFESerializer(serializers.ModelSerializer):
     class Meta:
         model = FieldEngineer
         fields = ('field_engineer','GMT','phone_number', 'joining_date',)
-
-class FleetVehicleSerializer(serializers.ModelSerializer):
-    field_engineer = FleetFESerializer()
-    class Meta:
-        model = FleetVehicle
-        fields = ('driver_name','plate_number','vehicle_status','field_engineer',)      
 
 
 class FuelStationSerializer(serializers.ModelSerializer):
@@ -64,8 +62,16 @@ class SiteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Site
-        # fields = ('__all__')
-        fields = ('HTA_ID','site_name', 'site_status','field_engineer','cluster','fuel_station','cluster',)
+        fields = '__all__'
+        # fields = ('HTA_ID','site_name', 'site_status','field_engineer','cluster','fuel_station',)
 
+class AllInfoSerializer(serializers.ModelSerializer):
+        fuel_station = FuelStationSerializer()
+        cluster = ClusterSerializer()
+        field_engineer = FieldEngineerSerializer()
+
+        class Meta:
+            model = Site
+            fields = '__all__'
 
 

@@ -1,4 +1,4 @@
-from api.serializers import ClusterSerializer, FieldEngineerSerializer, SiteSerializer, FuelStationSerializer, FleetVehicleSerializer
+from api.serializers import AllInfoSerializer, ClusterSerializer, FieldEngineerSerializer, SiteSerializer, FuelStationSerializer, FleetVehicleSerializer
 from siteinfo.models import Cluster, Site, FuelStation, FieldEngineer, FleetVehicle
 
 from django_filters.rest_framework import DjangoFilterBackend
@@ -25,8 +25,8 @@ class FleetVehicleList(generics.ListAPIView):
 
 
 class ClusterList(generics.ListAPIView):
-    # authentication_classes = [SessionAuthentication, BasicAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Cluster.objects.all()
     serializer_class = ClusterSerializer
     filter_backends = [DjangoFilterBackend]
@@ -34,8 +34,8 @@ class ClusterList(generics.ListAPIView):
 
 
 class SiteList(generics.ListAPIView):
-    # authentication_classes = [SessionAuthentication, BasicAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Site.objects.all()
     serializer_class = SiteSerializer
     filter_backends = [DjangoFilterBackend]
@@ -47,17 +47,23 @@ class SiteList(generics.ListAPIView):
 
 
 class FuelStationList(generics.ListAPIView):
-    # authentication_classes = [SessionAuthentication, BasicAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = FuelStation.objects.all()
     serializer_class = FuelStationSerializer
 
 
 class FieldEngineerList(generics.ListAPIView):
-    # authentication_classes = [SessionAuthentication, BasicAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = FieldEngineer.objects.all()
     serializer_class = FieldEngineerSerializer
     throttle_classes = [UserRateThrottle]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ('cluster', 'GMT')
+
+class AllInfoView(generics.ListAPIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
+    queryset = Site.objects.all()
+    serializer_class = AllInfoSerializer

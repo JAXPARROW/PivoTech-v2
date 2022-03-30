@@ -16,6 +16,7 @@ class FleetVehicleResource(resources.ModelResource):
         model = FleetVehicle
         skip_unchanged = True
         report_skipped = True
+        import_id_fields = ('registration_number',)
         exclude = ('id',)
 
 
@@ -99,13 +100,15 @@ class SiteResource(resources.ModelResource):
 
     
         fields = ('HTA_ID','tenant_ID','site_name','fe','fuel_station','cluster__maintanance_partner','grid_status',
-                    'configuration', 'luku_payment' , 'meter_number', 'fuel_cph', 'luku_cph', 'MKII_PLC', 'PLC_locked', 'QSV',
-                        'site_status', 'DG_type', 'dg_capacity', 'tank_capacity', 'cluster_item','region','dg_present','dg_ownership',
-                            'site_class', 'site_type', 'criticality', 'ETA', 'ERT', 
+                    'configuration','luku_payment' ,'meter_number','fuel_cph','luku_cph','MKII_PLC','PLC_locked', 'QSV',
+                        'site_status','DG_type','dg_capacity','tank_capacity','cluster_item','region','dg_present','dg_ownership',
+                            'site_class','site_type','criticality','ETA','ERT','htt_class','anchor_tenant','number_of_tenants',
+                                'tanesco_region','site_shelter','latitude','longitude',
                                 )
         
         export_order = ('HTA_ID','tenant_ID','site_name','fe','fuel_station','cluster__maintanance_partner','grid_status',
-                            'configuration', 'luku_payment' , 'meter_number', 'fuel_cph', 'luku_cph', 'MKII_PLC', 'PLC_locked', 'QSV',
-                                'site_status', 'DG_type', 'dg_capacity', 'tank_capacity','cluster_item','region','dg_present', 'dg_ownership',
-                                    'site_class', 'site_type', 'criticality', 'ETA', 'ERT', 
-                                        )
+                        'configuration','luku_payment' ,'meter_number','fuel_cph','luku_cph','MKII_PLC','PLC_locked', 'QSV',
+                            'site_status','DG_type','dg_capacity','tank_capacity','cluster_item','region','dg_present','dg_ownership',
+                                'site_class','site_type','criticality','ETA','ERT','htt_class','anchor_tenant','number_of_tenants',
+                                    'tanesco_region','site_shelter','latitude','longitude'
+                                    )
