@@ -6,7 +6,7 @@ from siteinfo.resources import ClusterResource, FieldEngineerResource, FleetVehi
 
 
 
-class FleetVehicleAdmin(ImportExportModelAdmin):
+class FleetVehicleAdmin(ImportExportActionModelAdmin):
     resource_class = FleetVehicleResource
     list_display = ['driver_name','registration_number','vehicle_status','phone_number']
     list_editable = ['vehicle_status',]
@@ -14,8 +14,8 @@ class FleetVehicleAdmin(ImportExportModelAdmin):
 
 class FieldEngineerAdmin(ImportExportActionModelAdmin):
     resource_class = FieldEngineerResource
-    list_display = ['field_engineer', 'cluster', 'GMT', 'phone_number', 'alternate_number','joining_date','age_of_service',]
-    list_editable = ['joining_date','cluster',]
+    list_display = ['field_engineer', 'cluster', 'GMT', 'phone_number', 'alternate_number','vehicle','joining_date','age_of_service',]
+    list_editable = ['joining_date','cluster','vehicle',]
 
 
 class ClusterAdmin(ImportExportActionModelAdmin):
