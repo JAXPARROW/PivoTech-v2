@@ -197,7 +197,7 @@ class Site(models.Model):
         chained_field='cluster',
         chained_model_field='cluster',
         show_all=False,
-        auto_choose=True,
+        auto_choose=False,
         sort=True)
     grid_status = models.CharField(choices=GRID_STATUS, default='Grid', null=True, max_length=50)
     configuration = models.CharField(choices=CONFIGURATION, default='GXX', null=True, max_length=50)
