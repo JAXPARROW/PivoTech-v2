@@ -42,3 +42,15 @@ docs/_build/
 
 # PyBuilder
 target/
+
+env 
+.vscode
+.idea
+.media
+db.sqlite3
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.pyc
+secrets.json

@@ -1,3 +1,5 @@
+import os
+
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -129,4 +131,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #Django JQUERY for the smart-select library
 USE_DJANGO_JQUERY = True
 
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
+MEDIA_URL='/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'media/')
+
+IMPORT_EXPORT_USE_TRANSACTIONS = False
