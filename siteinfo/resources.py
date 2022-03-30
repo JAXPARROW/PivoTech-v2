@@ -1,13 +1,7 @@
-from inspect import Attribute
-from pyexpat import model
-from unittest import skip
 from import_export import resources, widgets, fields
 from import_export.widgets import ForeignKeyWidget
 
 from siteinfo.models import Cluster, FuelStation, Site, FieldEngineer, FleetVehicle
-
-
-
 
 
 
@@ -116,12 +110,18 @@ class SiteResource(resources.ModelResource):
                     'configuration','luku_payment' ,'meter_number','fuel_cph','luku_cph','MKII_PLC','PLC_locked', 'QSV',
                         'site_status','DG_type','dg_capacity','tank_capacity','cluster_item','region','dg_present','dg_ownership',
                             'site_class','site_type','criticality','ETA','ERT','htt_class','anchor_tenant','number_of_tenants',
-                                'tanesco_region','site_shelter','latitude','longitude',
+                                'tanesco_region','site_shelter','SPA_Status','site_load','power_type','access_restricted',
+                                    'latitude','longitude','restriction_reasons',
                                 )
         
         export_order = ('HTA_ID','tenant_ID','site_name','fe','fuel_station','cluster__maintanance_partner','grid_status',
                         'configuration','luku_payment' ,'meter_number','fuel_cph','luku_cph','MKII_PLC','PLC_locked', 'QSV',
                             'site_status','DG_type','dg_capacity','tank_capacity','cluster_item','region','dg_present','dg_ownership',
                                 'site_class','site_type','criticality','ETA','ERT','htt_class','anchor_tenant','number_of_tenants',
-                                    'tanesco_region','site_shelter','latitude','longitude'
+                                    'tanesco_region','site_shelter','SPA_Status','site_load','power_type','access_restricted',
+                                        'latitude','longitude','restriction_reasons',
                                     )
+
+
+
+
