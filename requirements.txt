@@ -2,7 +2,6 @@ asgiref==3.3.2
 defusedxml==0.7.1
 diff-match-patch==20200713
 Django==3.2.12
-django-auth-ldap==4.0.0
 django-filter==21.1
 django-import-export==2.7.1
 django-model-utils==4.2.0
