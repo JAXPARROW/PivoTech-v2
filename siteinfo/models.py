@@ -234,6 +234,7 @@ class Site(models.Model):
         return '{} {}'.format(self.site_name,self.tenant_ID)
 
 
+
 class RelayData(models.Model):
     StartDate = models.DateField()
     zone = models.CharField(choices=ZONE, default='Coastal',max_length=50)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from siteinfo.models import Cluster, FieldEngineer, FuelStation, Site, FleetVehicle
+from siteinfo.models import Cluster, FieldEngineer, FuelStation, Site, FleetVehicle, RelayData
 from import_export.admin import ImportExportModelAdmin, ImportExportActionModelAdmin
 
 from siteinfo.resources import ClusterResource, FieldEngineerResource, FleetVehicleResource, FuelStationResource, SiteResource
@@ -45,12 +45,26 @@ class SiteAdmin(ImportExportModelAdmin):
     list_filter = ['cluster','grid_status','configuration','dg_ownership']
 
 
+# this will clear relay database table
+def delete_all_relay_data(modeladmin, request, queryset):
+    queryset = RelayData.objects.all().delete()
+    delete_all_relay_data.short_description = "Clear All Entries"
+
+class RelayDataAdmin(ImportExportActionModelAdmin):
+    actions = [delete_all_relay_data]
+    list_display = ['LegacySiteID','SiteName','GeneratorRunMinutes']
+    search_fields = ['LegacySiteID', 'SiteName']
+    date_hierarchy = ['StartDate']
+
+
+
 
 admin.site.register(FleetVehicle, FleetVehicleAdmin)
 admin.site.register(FieldEngineer, FieldEngineerAdmin)
 admin.site.register(Cluster, ClusterAdmin)
 admin.site.register(FuelStation, FuelStationAdmin)
 admin.site.register(Site, SiteAdmin)
+admin.site.register(RelayData)
 
 admin.site.site_header = "PIVOTECH SITES DATABASE"
 admin.site.site_title = "PIVOTECH SITES DATABASE"
