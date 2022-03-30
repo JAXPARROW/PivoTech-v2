@@ -1,3 +1,4 @@
+from inspect import Attribute
 from pyexpat import model
 from unittest import skip
 from import_export import resources, widgets, fields
@@ -26,19 +27,29 @@ class ClusterResource(resources.ModelResource):
         model = Cluster
         skip_unchanged = True
         report_skipped = True
-        # exclude = ('id',)
-        # import_id_fields = ('cluster_name')
+        exclude = ('id',)
+        import_id_fields = ('cluster_name',)
+        fields = ('cluster_name','noc_operator','field_supervisor','zonal_manager','zone','maintanance_partner')
+        export_order = ('cluster_name','noc_operator','field_supervisor','zonal_manager','zone','maintanance_partner')
 
 
 class FieldEngineerResource(resources.ModelResource):
 
     #cluster_item = cluster_name, renamed to avoid circular reference
     cluster_item = fields.Field(
-        column_name='Clusters',
-        attribute='cluster',
-        widget=ForeignKeyWidget(Cluster, 'cluster_name'),
-        saves_null_values=False,
-        readonly=False,
+        column_name = 'Clusters',
+        attribute = 'cluster',
+        widget = ForeignKeyWidget(Cluster, 'cluster_name'),
+        saves_null_values = False,
+        readonly = False,
+    )
+
+    vehicle = fields.Field(
+        column_name = 'Vehicle',
+        attribute = 'vehicle',
+        widget = ForeignKeyWidget(FleetVehicle, 'registration_number'),
+        saves_null_values = False,
+        readonly = False,
     )
 
     class Meta:
@@ -46,9 +57,9 @@ class FieldEngineerResource(resources.ModelResource):
         skip_unchanged = True
         report_skipped = True
         exclude = ('id','cluster')
-        import_id_fields = ('username',)
-        fields = ('username', 'cluster_item','phone_number','GMT', 'joining_date',)
-        export_order = ('username', 'cluster_item','phone_number','GMT', 'joining_date',)
+        import_id_fields = ('field_engineer',)
+        fields = ('field_engineer','cluster_item','phone_number','alternate_number','GMT','vehicle','joining_date',)
+        export_order = ('field_engineer','cluster_item','phone_number','alternate_number','GMT','vehicle','joining_date',)
 
 
 class FuelStationResource(resources.ModelResource):
@@ -57,8 +68,10 @@ class FuelStationResource(resources.ModelResource):
         model = FuelStation
         skip_unchanged = True
         report_skipped = True
-        # exclude = ('id',)
-        # import_id_fields = ('station_name')
+        exclude = ('id',)
+        import_id_fields = ('station_name',)
+        fields = ('station_name',)
+        export_order = ('station_name',)
         
 
 class SiteResource(resources.ModelResource):
