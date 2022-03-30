@@ -222,6 +222,7 @@ class Site(models.Model):
     PLC_locked = models.CharField(choices=YES_NO_SELECTION, default='YES', max_length=50)
     dg_capacity = models.IntegerField()
     tank_capacity = models.IntegerField(null=True)
+    site_shelter = models.CharField(choices=SITE_SHELTER, default='Outdoor',max_length=50, null=True, blank=True)
     ETA = models.TimeField()
     ERT = models.TimeField()
     access_restricted = models.CharField(choices=YES_NO_SELECTION, default='NO',max_length=50, null=True, blank=True)
