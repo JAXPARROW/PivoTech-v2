@@ -1,4 +1,4 @@
-asgiref==3.5.0
+asgiref==3.3.1
 defusedxml==0.7.1
 diff-match-patch==20200713
 Django==3.2.12
@@ -19,6 +19,7 @@ odfpy==1.4.1
 openpyxl==3.0.9
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
+python-ldap @ file:///C:/Users/Jackson%20Linus/Envs/Pivotech/Scripts/python_ldap-3.4.0-cp39-cp39-win_amd64.whl
 python3-ldap==0.9.8.4
 pytz==2021.3
 PyYAML==6.0
