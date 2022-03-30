@@ -233,3 +233,28 @@ class Site(models.Model):
     def __str__(self):
         return '{} {}'.format(self.site_name,self.tenant_ID)
 
+
+class RelayData(models.Model):
+    StartDate = models.DateField()
+    zone = models.CharField(choices=ZONE, default='Coastal',max_length=50)
+    LegacySiteID = models.CharField(max_length=50)
+    SiteName = models.CharField(max_length=50)
+    GeneratorRunDHM = models.CharField(max_length=50)
+    GeneratorRunMinutes = models.CharField(max_length=50)
+    CummulativeRunningDHM = models.CharField(max_length=50)
+    CummulativeRunningMinutes = models.CharField(max_length=50)
+    GeneratorStopMinutes = models.CharField(max_length=50)
+    GeneratorStopDHM = models.CharField(max_length=50)
+    CummulativeStopMinutes = models.CharField(max_length=50)
+    CummulativeStopDHM = models.CharField(max_length=50)
+    datasourcename	= models.CharField(max_length=50)
+    HTT_TrialSite = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name = 'Relay Data'
+        verbose_name_plural = 'Relay Data'
+
+    def __str__(self):
+        return self.SiteName
+
+
