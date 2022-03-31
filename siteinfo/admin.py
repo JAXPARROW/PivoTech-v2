@@ -25,11 +25,9 @@ class ClusterAdmin(ImportExportActionModelAdmin):
     list_search = ['field_engineer',]
 
 
-
 class FuelStationAdmin(ImportExportActionModelAdmin):
     resource_class = FuelStationResource
    
-
 
 # this will clear site database table
 def delete_all_Sites(modeladmin, request, queryset):
@@ -39,9 +37,7 @@ def delete_all_Sites(modeladmin, request, queryset):
 class SiteAdmin(ImportExportModelAdmin):
     resource_class = SiteResource
     actions = [delete_all_Sites]
-    list_display = [
-        'HTA_ID','tenant_ID','site_name','cluster','field_engineer','fuel_station','fuel_cph','luku_cph','tank_capacity'
-    ]
+    list_display = ['HTA_ID','tenant_ID','site_name','cluster','field_engineer','fuel_station','fuel_cph','luku_cph','tank_capacity']
     list_filter = ['cluster','grid_status','configuration','dg_ownership']
 
 
@@ -50,13 +46,12 @@ def delete_all_relay_data(modeladmin, request, queryset):
     queryset = RelayData.objects.all().delete()
     delete_all_relay_data.short_description = "Clear All Entries"
 
+
 class RelayDataAdmin(ImportExportActionModelAdmin):
     actions = [delete_all_relay_data]
-    list_display = ['LegacySiteID','SiteName','GeneratorRunMinutes']
+    list_display = ['StartDate','LegacySiteID','SiteName','GeneratorRunMinutes']
     search_fields = ['LegacySiteID', 'SiteName']
-    date_hierarchy = ['StartDate']
-
-
+    date_hierarchy = 'StartDate'
 
 
 admin.site.register(FleetVehicle, FleetVehicleAdmin)
@@ -64,7 +59,8 @@ admin.site.register(FieldEngineer, FieldEngineerAdmin)
 admin.site.register(Cluster, ClusterAdmin)
 admin.site.register(FuelStation, FuelStationAdmin)
 admin.site.register(Site, SiteAdmin)
-admin.site.register(RelayData)
+admin.site.register(RelayData, RelayDataAdmin)
+
 
 admin.site.site_header = "PIVOTECH SITES DATABASE"
 admin.site.site_title = "PIVOTECH SITES DATABASE"

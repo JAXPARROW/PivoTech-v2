@@ -1,7 +1,7 @@
 from import_export import resources, widgets, fields
 from import_export.widgets import ForeignKeyWidget
 
-from siteinfo.models import Cluster, FuelStation, Site, FieldEngineer, FleetVehicle
+from siteinfo.models import Cluster, FuelStation, Site, FieldEngineer, FleetVehicle, RelayData
 
 
 
@@ -112,7 +112,7 @@ class SiteResource(resources.ModelResource):
                             'site_class','site_type','criticality','ETA','ERT','htt_class','anchor_tenant','number_of_tenants',
                                 'tanesco_region','site_shelter','SPA_Status','site_load','power_type','access_restricted',
                                     'latitude','longitude','restriction_reasons',
-                                )
+                                        )
         
         export_order = ('HTA_ID','tenant_ID','site_name','fe','fuel_station','cluster__maintanance_partner','grid_status',
                         'configuration','luku_payment' ,'meter_number','fuel_cph','luku_cph','MKII_PLC','PLC_locked', 'QSV',
@@ -120,8 +120,16 @@ class SiteResource(resources.ModelResource):
                                 'site_class','site_type','criticality','ETA','ERT','htt_class','anchor_tenant','number_of_tenants',
                                     'tanesco_region','site_shelter','SPA_Status','site_load','power_type','access_restricted',
                                         'latitude','longitude','restriction_reasons',
-                                    )
+                                            )
 
 
+class RelayDataResource(resources.ModelResource):
+    model = RelayData
+    fields = ('zone','LegacySiteID','SiteName','GeneratorRunDHM','GeneratorRunMinutes','CummulativeRunningDHM','CummulativeRunningMinutes',
+                'GeneratorStopMinutes','GeneratorStopDHM','CummulativeStopMinutes','CummulativeStopDHM','datasourcename','HTT_TrialSite'
+                    )
 
+    export_order = ('zone','LegacySiteID','SiteName','GeneratorRunDHM','GeneratorRunMinutes','CummulativeRunningDHM','CummulativeRunningMinutes',
+                        'GeneratorStopMinutes','GeneratorStopDHM','CummulativeStopMinutes','CummulativeStopDHM','datasourcename','HTT_TrialSite'
+                            )
 

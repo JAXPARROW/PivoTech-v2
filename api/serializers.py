@@ -1,4 +1,4 @@
-from siteinfo.models import Cluster, FleetVehicle, FuelStation, Site, FieldEngineer
+from siteinfo.models import Cluster, FleetVehicle, FuelStation, Site, FieldEngineer, RelayData
 from rest_framework import serializers
 
 
@@ -74,4 +74,11 @@ class AllInfoSerializer(serializers.ModelSerializer):
             model = Site
             fields = '__all__'
 
+class RelayDataSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = RelayData
+        fields = ('StartDate','zone','LegacySiteID','SiteName','GeneratorRunDHM','GeneratorRunMinutes','CummulativeRunningDHM','CummulativeRunningMinutes',
+                    'GeneratorStopMinutes','GeneratorStopDHM','CummulativeStopMinutes','CummulativeStopDHM','datasourcename','HTT_TrialSite'
+                        )
 

@@ -137,7 +137,6 @@ class FleetVehicle(models.Model):
         return self.registration_number
 
 
-
 class FuelStation(models.Model):
     station_name = models.CharField(max_length=50 ,blank=False, unique=True, null=True)
     class Meta:
@@ -160,7 +159,6 @@ class Cluster(models.Model):
         return self.cluster_name
 
 
-
 class FieldEngineer(models.Model):
     cluster = models.ForeignKey('Cluster', null=True, blank=True, on_delete=models.SET_NULL)
     field_engineer = models.CharField(max_length=30, unique=True)
@@ -181,7 +179,6 @@ class FieldEngineer(models.Model):
         age_of_service = (datetime.datetime.now().date() - self.joining_date).days
         return age_of_service
         
-
 
 class Site(models.Model):
     HTA_ID = models.CharField(primary_key=True, max_length=10, unique=True, blank=False)
@@ -234,7 +231,6 @@ class Site(models.Model):
         return '{} {}'.format(self.site_name,self.tenant_ID)
 
 
-
 class RelayData(models.Model):
     StartDate = models.DateField()
     zone = models.CharField(choices=ZONE, default='Coastal',max_length=50)
@@ -257,5 +253,4 @@ class RelayData(models.Model):
 
     def __str__(self):
         return self.SiteName
-
-
+        

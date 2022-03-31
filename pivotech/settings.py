@@ -1,10 +1,25 @@
 import os
+import json
 
 from pathlib import Path
+from django.core.exceptions import ImproperlyConfigured
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-)qnghio!22fq)1j9ir9gy(#cvk-a-+pjq=xt&mjrr+ez&oc#e='
+
+with open(os.path.join(BASE_DIR, 'secrets.json')) as secrets_file:
+    secrets = json.load(secrets_file)
+    
+def get_secret(setting, secrets=secrets):
+    """Get secret setting or fail with ImproperlyConfigured"""
+    try:
+        return secrets[setting]
+    except KeyError:
+        raise ImproperlyConfigured("Set the {} setting".format(setting))
+
+
+SECRET_KEY = get_secret('SECRET_KEY')
 
 DEBUG = True
 
@@ -25,13 +40,11 @@ INSTALLED_APPS = [
     'django_filters',
     'smart_selects',
 
-
     #custom made apps
     'siteinfo',
     'api',
     'accounts',
 ]
-
 
 
 REST_FRAMEWORK = {
@@ -53,12 +66,13 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.AnonRateThrottle',
         'rest_framework.throttling.UserRateThrottle'
     ],
-    
+
     'DEFAULT_THROTTLE_RATES': {
         'anon': '10/min',
         'user': '10/min'
     }
 }
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -91,12 +105,27 @@ TEMPLATES = [
 WSGI_APPLICATION = 'pivotech.wsgi.application'
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+
+DATABASES = {  
+    'default': {  
+        'ENGINE': get_secret('DB_ENGINE'),  
+        'NAME': get_secret('DB_NAME'),  
+        'USER': get_secret('DB_USER'),  
+        'PASSWORD': get_secret('DB_PASSWORD'),  
+        'HOST': get_secret('DB_HOST'),  
+        'PORT': get_secret('DB_PORT'),  
+        'OPTIONS': {  
+            'init_command': get_secret('INIT_COMMAND')
+        }  
+    }  
+}  
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -123,7 +152,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 STATIC_URL = '/static/'
 

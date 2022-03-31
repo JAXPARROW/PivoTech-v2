@@ -1,5 +1,7 @@
-from api.serializers import AllInfoSerializer, ClusterSerializer, FieldEngineerSerializer, SiteSerializer, FuelStationSerializer, FleetVehicleSerializer
-from siteinfo.models import Cluster, Site, FuelStation, FieldEngineer, FleetVehicle
+from api.serializers import AllInfoSerializer, ClusterSerializer, FieldEngineerSerializer, \
+    SiteSerializer, FuelStationSerializer, FleetVehicleSerializer, RelayDataSerializer
+
+from siteinfo.models import Cluster, Site, FuelStation, FieldEngineer, FleetVehicle, RelayData
 
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
@@ -18,10 +20,12 @@ from rest_framework.permissions import IsAuthenticated
 #     queryset = Group.objects.all()
 #     serializer_class = GroupSerializer
 
+
 class FleetVehicleList(generics.ListAPIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = FleetVehicle.objects.all()
     serializer_class = FleetVehicleSerializer
-    
 
 
 class ClusterList(generics.ListAPIView):
@@ -42,8 +46,7 @@ class SiteList(generics.ListAPIView):
     filterset_fields = ('HTA_ID','tenant_ID','site_name','field_engineer','fuel_station','cluster__maintanance_partner','grid_status',
                             'configuration', 'luku_payment' , 'meter_number', 'fuel_cph', 'luku_cph', 'MKII_PLC', 'PLC_locked', 'QSV',
                                 'site_status', 'DG_type', 'dg_capacity', 'tank_capacity', 'cluster','region','dg_present','dg_ownership',
-                                    'site_class', 'site_type', 'criticality', 'ETA', 'ERT',
-                            )           
+                                    'site_class', 'site_type', 'criticality', 'ETA', 'ERT',)           
 
 
 class FuelStationList(generics.ListAPIView):
@@ -62,8 +65,18 @@ class FieldEngineerList(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ('cluster', 'GMT')
 
+
 class AllInfoView(generics.ListAPIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     # permission_classes = [IsAuthenticated]
     queryset = Site.objects.all()
     serializer_class = AllInfoSerializer
+
+
+class RelayDataView(generics.ListAPIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = RelayData.objects.all()
+    serializer_class = RelayDataSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ('LegacySiteID','SiteName','StartDate','datasourcename')
