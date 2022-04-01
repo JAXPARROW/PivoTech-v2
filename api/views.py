@@ -46,7 +46,8 @@ class SiteList(generics.ListAPIView):
     filterset_fields = ('HTA_ID','tenant_ID','site_name','field_engineer','fuel_station','cluster__maintanance_partner','grid_status',
                             'configuration', 'luku_payment' , 'meter_number', 'fuel_cph', 'luku_cph', 'MKII_PLC', 'PLC_locked', 'QSV',
                                 'site_status', 'DG_type', 'dg_capacity', 'tank_capacity', 'cluster','region','dg_present','dg_ownership',
-                                    'site_class', 'site_type', 'criticality', 'ETA', 'ERT',)           
+                                    'site_class', 'site_type', 'criticality', 'ETA', 'ERT',
+                                    )           
 
 
 class FuelStationList(generics.ListAPIView):

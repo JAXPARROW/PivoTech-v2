@@ -1,5 +1,6 @@
 import os
 import json
+import MySQLdb
 
 from pathlib import Path
 from django.core.exceptions import ImproperlyConfigured
